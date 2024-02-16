@@ -1,18 +1,18 @@
 // @ts-nocheck
-import * as React from 'react';
-import { createModel } from '@xstate/test';
-import { createMachine, assign } from 'xstate';
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import { App } from './complete/App';
+// import * as React from 'react';
+import { createModel } from "@xstate/test";
+import { createMachine, assign } from "xstate";
+import { render, fireEvent, cleanup } from "@testing-library/react";
+import { App } from "./complete/App";
 
 const testTimerAppMachine = createMachine({
-  initial: 'newTimer',
+  initial: "newTimer",
   context: {
-    value: '',
+    value: "",
   },
   states: {
     newTimer: {
-      initial: 'noTimers',
+      initial: "noTimers",
       states: {
         noTimers: {},
         afterDeleted: {},
@@ -26,19 +26,19 @@ const testTimerAppMachine = createMachine({
         },
         PLAY: {
           cond: (ctx) => ctx.value > 0,
-          target: 'timer',
+          target: "timer",
         },
       },
       meta: {
         test: async ({ getByTestId }) => {
-          getByTestId('new-timer'); // [data-testid="new-timer"]
+          getByTestId("new-timer"); // [data-testid="new-timer"]
         },
       },
     },
     timer: {
       on: {
-        DELETE: 'newTimer.afterDeleted',
-        ADD: 'newTimer.adding',
+        DELETE: "newTimer.afterDeleted",
+        ADD: "newTimer.adding",
       },
       meta: {
         test: async ({ getByText }, state) => {
@@ -54,7 +54,7 @@ const testTimerAppModel = createModel(testTimerAppMachine).withEvents({
     exec: async ({ getByTitle }) => {
       const input = getByTitle(/Duration/i);
 
-      fireEvent.change(input, { target: { value: '124' } });
+      fireEvent.change(input, { target: { value: "124" } });
     },
   },
   PLAY: {
@@ -80,7 +80,7 @@ const testTimerAppModel = createModel(testTimerAppMachine).withEvents({
   },
 });
 
-describe('something', () => {
+describe("something", () => {
   const testPlans = testTimerAppModel.getSimplePathPlans();
 
   testPlans.forEach((plan) => {
