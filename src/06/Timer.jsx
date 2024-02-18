@@ -18,7 +18,7 @@ export const Timer = () => {
     }, interval * 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [send, interval]);
 
   return (
     <div

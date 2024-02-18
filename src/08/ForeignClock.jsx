@@ -1,5 +1,5 @@
-import { useMachine } from "@xstate/react";
-import { useContext, useEffect, useActor } from "react";
+import { useMachine, useActor } from "@xstate/react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 import { LocalTimeContext } from "./Clock";
 import { foreignClockMachine } from "./foreignClockMachine";
@@ -40,6 +40,7 @@ export function ForeignClock() {
       {(state.matches("timezonesLoaded") || timezones) && (
         <>
           <select
+            defaultValue=""
             className="foreignCity"
             onChange={(e) => {
               send({
@@ -48,9 +49,7 @@ export function ForeignClock() {
               });
             }}
           >
-            <option disabled selected>
-              Select a timezone
-            </option>
+            <option disabled>Select a timezone</option>
             {state.context.timezones.map((timezone) => {
               return <option key={timezone}>{timezone}</option>;
             })}

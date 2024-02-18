@@ -1,9 +1,7 @@
-import { createMachine, assign } from 'xstate';
-
-const timerExpired = (ctx) => ctx.elapsed >= ctx.duration;
+import { createMachine, assign } from "xstate";
 
 export const timerMachine = createMachine({
-  initial: 'idle',
+  initial: "idle",
   context: {
     duration: 5,
     elapsed: 0,
@@ -16,21 +14,23 @@ export const timerMachine = createMachine({
         elapsed: 0,
       }),
       on: {
-        TOGGLE: 'running',
+        TOGGLE: "running",
       },
     },
     running: {
+      always: {
+        cond: (ctx) => {
+          return ctx.elapsed >= ctx.duration;
+        },
+        target: "expired",
+      },
       on: {
-        // Add an eventless (always) transition that checks if the timer is expired.
-        // If so, go to the `expired` state.
-        // ...
-
         TICK: {
           actions: assign({
             elapsed: (ctx) => ctx.elapsed + ctx.interval,
           }),
         },
-        TOGGLE: 'paused',
+        TOGGLE: "paused",
         ADD_MINUTE: {
           actions: assign({
             duration: (ctx) => ctx.duration + 60,
@@ -40,13 +40,13 @@ export const timerMachine = createMachine({
     },
     paused: {
       on: {
-        TOGGLE: 'running',
-        RESET: 'idle',
+        TOGGLE: "running",
+        RESET: "idle",
       },
     },
     expired: {
       on: {
-        RESET: 'idle',
+        RESET: "idle",
       },
     },
   },

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { useMachine } from "@xstate/react";
@@ -14,7 +15,7 @@ export const NewTimer = ({ onSubmit, onCancel }) => {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     inputRef.current?.focus();
   }, [inputRef]);
 
